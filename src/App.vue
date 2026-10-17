@@ -4,11 +4,7 @@ import Calculate from "@/components/Calculate.vue";
 
 <template>
   <v-app>
-<!--  <header>-->
-<!--    <div class="wrapper">-->
-      <Calculate msg="Давайте что-нибудь посчитаем!" />
-<!--    </div>-->
-<!--  </header>-->
+    <Calculate msg="Давайте что-нибудь посчитаем!"/>
   </v-app>
 </template>
 
