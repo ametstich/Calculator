@@ -6,7 +6,6 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import { VitePWA } from 'vite-plugin-pwa'
 import vuetify from 'vite-plugin-vuetify'
 
-// https://vite.dev/config/
 export default defineConfig({
   base: '/Calculator/',
   plugins: [
@@ -30,6 +29,14 @@ export default defineConfig({
             src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png'
+          }
+        ],
+        screenshots: [
+          {
+            src: 'screenshot-mobile.png',
+            sizes: '356x772',
+            type: 'image/png',
+            label: 'Мобильный интерфейс приложения'
           }
         ]
       }
