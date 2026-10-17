@@ -3,11 +3,13 @@ import Calculate from "@/components/Calculate.vue";
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
+  <v-app>
+<!--  <header>-->
+<!--    <div class="wrapper">-->
       <Calculate msg="Давайте что-нибудь посчитаем!" />
-    </div>
-  </header>
+<!--    </div>-->
+<!--  </header>-->
+  </v-app>
 </template>
 
 <style scoped>
