@@ -34,9 +34,9 @@ const change = () => {
           </v-toolbar-title>
         </v-toolbar>
         <form class="w-100 px-3">
-          <v-text-field v-model="state.param_1" type="number" label="Param 1" @change="change" />
-          <v-text-field v-model="state.param_2" type="number" label="Param 2" @change="change" />
-          <v-text-field v-model="state.param_3" type="number" label="Param 3" @change="change" />
+          <v-text-field v-model="state.param_1" type="number" label="Замер в сантиметрах (см)" @change="change" />
+          <v-text-field v-model="state.param_2" type="number" label="Фактическая температура (°C)" @change="change" />
+          <v-text-field v-model="state.param_3" type="number" label="Плотность при 15°C(из паспорта)" @change="change" />
           <v-input v-if="result">{{result}}% s.v's.</v-input>
         </form>
     </v-main>
