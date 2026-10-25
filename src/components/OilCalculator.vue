@@ -24,7 +24,7 @@
                 label="Tank measurement (Sounding)"
                 type="number"
                 variant="outlined"
-                suffix="см"
+                suffix="sm"
                 prepend-inner-inner-icon="mdi-ruler"
                 class="mb-2"
             />
@@ -49,7 +49,7 @@
             type="number"
             step="0.0001"
             variant="outlined"
-            suffix="г/см³"
+            suffix="g/sm³"
             hint="For example: 0.9850 for heavy fuel oil or 0.8450 for MGO"
             persistent-hint
             class="mb-6"
@@ -66,8 +66,8 @@
           </div>
 
           <div class="d-flex justify-space-between mb-2">
-            <span>Volume according to the tank table:</span>
-            <span class="font-weight-bold text-blue-darken-3">{{ volume.toFixed(3) }} м³</span>
+            <span>Tank table volume:</span>
+            <span class="font-weight-bold text-blue-darken-3">{{ volume.toFixed(3) }} m³</span>
           </div>
 
           <div class="d-flex justify-space-between mb-2">
