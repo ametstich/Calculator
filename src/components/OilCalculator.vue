@@ -6,25 +6,26 @@
       </v-card-title>
 
       <v-card-text class="px-0">
-        <v-select
-            v-model="selectedTankId"
-            :items="tanksData"
-            item-title="name"
-            item-value="id"
-            label="Select tank"
-            variant="outlined"
-            prepend-inner-icon="mdi-propane-tank"
-            class="mb-4"
-        />
+<!--        <v-select-->
+<!--            v-model="selectedTankId"-->
+<!--            :items="tanksData"-->
+<!--            item-title="name"-->
+<!--            item-value="id"-->
+<!--            label="Select tank"-->
+<!--            variant="outlined"-->
+<!--            prepend-inner-icon="mdi-propane-tank"-->
+<!--            class="mb-4"-->
+<!--        />-->
 
         <v-row>
           <v-col cols="12" sm="6" class="py-0">
             <v-text-field
-                v-model.number="sounding"
+                v-model.number="volume"
                 label="Tank measurement (Sounding)"
                 type="number"
+                inputmode="numeric"
                 variant="outlined"
-                suffix="sm"
+                suffix="m³"
                 prepend-inner-inner-icon="mdi-ruler"
                 class="mb-2"
             />
@@ -35,6 +36,7 @@
                 v-model.number="temperature"
                 label="Temperature inside the tank"
                 type="number"
+                inputmode="numeric"
                 variant="outlined"
                 suffix="°C"
                 prepend-inner-inner-icon="mdi-thermometer"
@@ -60,15 +62,15 @@
         <div class="bg-grey-lighten-4 pa-4 rounded-lg border">
           <div class="text-subtitle-2 text-grey-darken-1 mb-3">MEASUREMENT REPORT:</div>
 
-          <div class="d-flex justify-space-between mb-2">
-            <span>Selected tank:</span>
-            <span class="font-weight-medium">{{ currentTank?.name || 'Not selected' }}</span>
-          </div>
+<!--          <div class="d-flex justify-space-between mb-2">-->
+<!--            <span>Selected tank:</span>-->
+<!--            <span class="font-weight-medium">{{ currentTank?.name || 'Not selected' }}</span>-->
+<!--          </div>-->
 
-          <div class="d-flex justify-space-between mb-2">
-            <span>Tank table volume:</span>
-            <span class="font-weight-bold text-blue-darken-3">{{ volume.toFixed(3) }} m³</span>
-          </div>
+<!--          <div class="d-flex justify-space-between mb-2">-->
+<!--            <span>Tank table volume:</span>-->
+<!--            <span class="font-weight-bold text-blue-darken-3">{{ volume.toFixed(3) }} m³</span>-->
+<!--          </div>-->
 
           <div class="d-flex justify-space-between mb-2">
             <span>ASTM 54B Coefficient (VCF):</span>
@@ -93,63 +95,63 @@
 </template>
 
 <script setup lang="ts">
-
 import { ref, computed } from 'vue'
 import { calculateDensityASTM } from '../utils/astm54b'
-import tanksData from '../data/tanks.json'
+// import tanksData from '../data/tanks.json'
 
 // Set a safe default value for the tank ID
 // If the array is empty, we take an empty string.
-const defaultTankId = tanksData?.[0]?.id ?? ''
+// const defaultTankId = tanksData?.[0]?.id ?? ''
 
 
-const selectedTankId = ref<string>(defaultTankId)
-const sounding = ref<number | null>(null)
+// const selectedTankId = ref<string>(defaultTankId)
+// const sounding = ref<number | null>(null)
+const volume = ref<number>(0)
 const temperature = ref<number>(15)
 const density15 = ref<number>(0.9850)
 
 // We find the currently selected tank object (it may return undefined, hence the type Tank | undefined)
-const currentTank = computed(() => {
-  return tanksData.find(t => t.id === selectedTankId.value)
-})
+// const currentTank = computed(() => {
+//   return tanksData.find(t => t.id === selectedTankId.value)
+// })
 
 // --- Volume interpolation based on the calibration table for the selected tank ---
-const volume = computed<number>(() => {
-  const snd = sounding.value
+// const volume = computed<number>(() => {
+//   const snd = sounding.value
 
   // Safe check: if no measurement has been entered, or if the tank cannot be found or has not been selected, return 0.
-  if (snd === null || snd < 0 || !currentTank.value || !currentTank.value.table) {
-    return 0
-  }
+  // if (snd === null || snd < 0 || !currentTank.value || !currentTank.value.table) {
+  //   return 0
+  // }
 
   // Creating and sorting a copy of a table
-  const table = [...currentTank.value.table].sort((a, b) => a.cm - b.cm)
+  // const table = [...currentTank.value.table].sort((a, b) => a.cm - b.cm)
 
   // Explicitly retrieve the first and last elements using the .at() method (supported in Vite/modern browsers)
-  const firstPoint = table.at(0)
-  const lastPoint = table.at(-1)
+  // const firstPoint = table.at(0)
+  // const lastPoint = table.at(-1)
 
   // Если по какой-то причине точек в таблице нет — выходим
-  if (!firstPoint || !lastPoint) return 0
+  // if (!firstPoint || !lastPoint) return 0
 
   // Checking boundary conditions (TS is now certain that firstPoint and lastPoint are defined)
-  if (snd <= firstPoint.cm) return firstPoint.m3
-  if (snd >= lastPoint.cm) return lastPoint.m3
+  // if (snd <= firstPoint.cm) return firstPoint.m3
+  // if (snd >= lastPoint.cm) return lastPoint.m3
 
   // Finding an interval for linear interpolation
-  for (let i = 0; i < table.length - 1; i++) {
-    const p1 = table[i]
-    const p2 = table[i + 1]
-
-    // An additional micro-check for TS, to prevent it from complaining inside the loop
-    if (!p1 || !p2) continue
-
-    if (snd >= p1.cm && snd <= p2.cm) {
-      return p1.m3 + ((snd - p1.cm) * (p2.m3 - p1.m3)) / (p2.cm - p1.cm)
-    }
-  }
-  return 0
-})
+  // for (let i = 0; i < table.length - 1; i++) {
+  //   const p1 = table[i]
+  //   const p2 = table[i + 1]
+  //
+  //   // An additional micro-check for TS, to prevent it from complaining inside the loop
+  //   if (!p1 || !p2) continue
+  //
+  //   if (snd >= p1.cm && snd <= p2.cm) {
+  //     return p1.m3 + ((snd - p1.cm) * (p2.m3 - p1.m3)) / (p2.cm - p1.cm)
+  //   }
+  // }
+  // return 0
+// })
 
 // --- Calculation according to ASTM 54B standard ---
 const astmResult = computed(() => {
